@@ -1,0 +1,2 @@
+class PersonnelMixin(object):
+    pass
