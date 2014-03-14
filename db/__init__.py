@@ -16,13 +16,23 @@ class DatabaseTable(object):
         else:
             self.table = {}
 
-    def get(self, key):
-        return json.loads(self.table[key])
-
     def set(self, key, entity):
         self.table[key] = entity.to_JSON()
         self.commit()
         return True
+
+    def get(self, key):
+        if key in self.table:
+            return json.loads(self.table[key])
+        return None
+
+    def delete(self, key):
+        if key in self.table:
+            del self.table[key]
+        return True
+
+    def dump(self):
+        return self.table
 
     def commit(self):
         self.db[self.table_name] = json.dumps(self.table)
@@ -40,8 +50,19 @@ class DatabaseSupport(object):
         return self.buildings.set(building.building_id, building)
 
     def get_building(self, building_id):
-        data = self.buildings.get(building_id)
-        return Building(**data)
+        return self.buildings.get(building_id)
+
+    def update_building(self, building):
+        return self.buildings.set(building.building_id, building)
+
+    def delete_building(self, building_id):
+        return self.buildings.delete(building_id)
+
+    def dump_buildings(self):
+        """
+        Useful for debugging.
+        """
+        return self.buildings.dump()
 
 
 class Model(object):
@@ -49,6 +70,9 @@ class Model(object):
     def __init__(self, **data):
         for prop, value in data.iteritems():
             setattr(self, prop, value)
+
+    def __repr__(self):
+        return self.to_JSON()
 
     def to_JSON(self):
         return json.dumps(self.__dict__)

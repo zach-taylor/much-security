@@ -9,9 +9,11 @@ from views import prompts
 
 class BuildingView(BaseView):
     supported_operations = [
+        'get',
         'create',
         'update',
-        'delete'
+        'delete',
+        'debug'
     ]
 
     create_building_success_message = 'Building created.'
@@ -19,6 +21,12 @@ class BuildingView(BaseView):
 
     update_building_success_message = 'Building updated.'
     update_building_error_message = 'Could not update building.'
+
+    get_building_success_message = 'Building retrieved: %s'
+    get_building_error_message = 'Could not retrieve building.'
+
+    delete_building_success_message = 'Building deleted.'
+    delete_building_error_message = 'Could not delete building.'
 
     def __init__(self, router):
         super(BuildingView, self).__init__(router)
@@ -28,9 +36,11 @@ class BuildingView(BaseView):
 
         # Building view menu
         menu_options = OrderedDict()
+        menu_options['get'] = 'Get a building'
         menu_options['create'] = 'Create a new building'
         menu_options['update'] = 'Update a building'
         menu_options['delete'] = 'Delete a building'
+        menu_options['debug'] = 'Debug'
         menu_options['back'] = '<< Back'
         self.menu_prompt = prompts.MenuPrompt(menu_options)
 
@@ -39,6 +49,17 @@ class BuildingView(BaseView):
         creation_prompts['id'] = prompts.TextPrompt('Building ID')
         creation_prompts['location'] = prompts.TextPrompt('Location')
         self.creation_prompt_list = prompts.PromptList(creation_prompts)
+
+        # Update prompts (happen to be the same as creation)
+        self.update_prompt_list = self.creation_prompt_list
+
+        # Retrieval prompts
+        retrieval_prompts = OrderedDict()
+        retrieval_prompts['id'] = prompts.TextPrompt('Building ID')
+        self.retrieval_prompt_list = prompts.PromptList(retrieval_prompts)
+
+        # Deletion prompts (happen to be the same as retrieval)
+        self.deletion_prompt_list = self.retrieval_prompt_list
 
     def get_header(self):
         return 'Manage Buildings'
@@ -77,7 +98,7 @@ class BuildingView(BaseView):
         the information to be updated. The gathered parameters will be passed on
         to the building controller.
         """
-        update_params = self.creation_prompt_list.ask_and_parse_all()
+        update_params = self.update_prompt_list.ask_and_parse_all()
         success = self.controller.update_building(
             update_params['id'], update_params['location']
         )
@@ -92,4 +113,28 @@ class BuildingView(BaseView):
         Delete an existing building by prompting the user for the building ID.
         This ID will be passed on to the building controller.
         """
-        pass
+        delete_params = self.deletion_prompt_list.ask_and_parse_all()
+        success = self.controller.delete_building(delete_params['id'])
+
+        if success:
+            self.output.success(self.delete_building_success_message, end='\n\n')
+        else:
+            self.output.fail(self.delete_building_error_message, end='\n\n')
+
+    def get(self):
+        """
+        Get a building. This is not in our design, but it is useful for debugging.
+        """
+        get_params = self.retrieval_prompt_list.ask_and_parse_all()
+        building = self.controller.get_building(get_params['id'])
+
+        if building:
+            self.output.success(self.get_building_success_message % building, end='\n\n')
+        else:
+            self.output.fail(self.get_building_error_message, end='\n\n')
+
+    def debug(self):
+        """
+        Dump the contents of the buildings table for debugging purposes.
+        """
+        self.output.warn(self.controller.get_building_debug(), end='\n\n')

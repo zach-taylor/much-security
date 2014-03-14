@@ -51,4 +51,4 @@ class Router(CLIMixin):
         """
         Exits the application.
         """
-        sys.exit()
+        sys.exit(0)
