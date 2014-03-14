@@ -20,7 +20,7 @@ class DatabaseTable(object):
         return json.loads(self.table[key])
 
     def set(self, key, entity):
-        self.table[key] = entity.to_JSON
+        self.table[key] = entity.to_JSON()
         self.commit()
         return True
 

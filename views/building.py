@@ -17,6 +17,9 @@ class BuildingView(BaseView):
     create_building_success_message = 'Building created.'
     create_building_error_message = 'Could not create building.'
 
+    update_building_success_message = 'Building updated.'
+    update_building_error_message = 'Could not update building.'
+
     def __init__(self, router):
         super(BuildingView, self).__init__(router)
 
@@ -74,7 +77,15 @@ class BuildingView(BaseView):
         the information to be updated. The gathered parameters will be passed on
         to the building controller.
         """
-        pass
+        update_params = self.creation_prompt_list.ask_and_parse_all()
+        success = self.controller.update_building(
+            update_params['id'], update_params['location']
+        )
+
+        if success:
+            self.output.success(self.update_building_success_message, end='\n\n')
+        else:
+            self.output.fail(self.update_building_error_message, end='\n\n')
 
     def delete(self):
         """
