@@ -1,5 +1,5 @@
-from models.personnel import PersonnelMixin
+from models.personnel import Personnel
 
 
-class Visitor(PersonnelMixin):
+class Visitor(Personnel):
     pass

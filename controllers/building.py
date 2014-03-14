@@ -6,31 +6,31 @@ from models.building import Building
 
 class BuildingController(BaseController):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         super(BuildingController, self).__init__()
         self.db = get_database_support()
 
-    def create_building(self, building_id, location):
-        building = Building(building_id, location)
+    def create_building(self, location):
+        building = Building(location=location)
         return self.db.put_building(building)
 
-    def get_building(self, building_id):
-        building_data = self.db.get_building(building_id)
+    def get_building(self, location):
+        building_data = self.db.get_building(location)
         if not building_data:
             return None
         return Building(**building_data)
 
-    def update_building(self, building_id, location):
-        building = self.get_building(building_id)
+    def update_building(self, old_location, new_location):
+        building = self.get_building(old_location)
         if not building:
             return False
 
-        if location:
-            building.location = location
-        return self.db.update_building(building)
+        if new_location:
+            building.location = new_location
+        return self.db.update_building(building, old_key=old_location)
 
-    def delete_building(self, building_id):
-        return self.db.delete_building(building_id)
+    def delete_building(self, location):
+        return self.db.delete_building(location)
 
     def get_building_debug(self):
         return self.db.dump_buildings()

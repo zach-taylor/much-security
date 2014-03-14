@@ -46,16 +46,18 @@ class BuildingView(BaseView):
 
         # Creation prompts
         creation_prompts = OrderedDict()
-        creation_prompts['id'] = prompts.TextPrompt('Building ID')
         creation_prompts['location'] = prompts.TextPrompt('Location')
         self.creation_prompt_list = prompts.PromptList(creation_prompts)
 
-        # Update prompts (happen to be the same as creation)
-        self.update_prompt_list = self.creation_prompt_list
+        # Update prompts
+        update_prompts = OrderedDict()
+        update_prompts['old_location'] = prompts.TextPrompt('Old location')
+        update_prompts['new_location'] = prompts.TextPrompt('New location')
+        self.update_prompt_list = prompts.PromptList(update_prompts)
 
         # Retrieval prompts
         retrieval_prompts = OrderedDict()
-        retrieval_prompts['id'] = prompts.TextPrompt('Building ID')
+        retrieval_prompts['location'] = prompts.TextPrompt('Location')
         self.retrieval_prompt_list = prompts.PromptList(retrieval_prompts)
 
         # Deletion prompts (happen to be the same as retrieval)
@@ -83,9 +85,7 @@ class BuildingView(BaseView):
         The gathered parameters will be passed on to the building controller.
         """
         create_params = self.creation_prompt_list.ask_and_parse_all()
-        success = self.controller.create_building(
-            create_params['id'], create_params['location']
-        )
+        success = self.controller.create_building(create_params['location'])
 
         if success:
             self.output.success(self.create_building_success_message, end='\n\n')
@@ -100,7 +100,7 @@ class BuildingView(BaseView):
         """
         update_params = self.update_prompt_list.ask_and_parse_all()
         success = self.controller.update_building(
-            update_params['id'], update_params['location']
+            update_params['old_location'], update_params['new_location']
         )
 
         if success:
@@ -114,7 +114,7 @@ class BuildingView(BaseView):
         This ID will be passed on to the building controller.
         """
         delete_params = self.deletion_prompt_list.ask_and_parse_all()
-        success = self.controller.delete_building(delete_params['id'])
+        success = self.controller.delete_building(delete_params['location'])
 
         if success:
             self.output.success(self.delete_building_success_message, end='\n\n')
@@ -126,7 +126,7 @@ class BuildingView(BaseView):
         Get a building. This is not in our design, but it is useful for debugging.
         """
         get_params = self.retrieval_prompt_list.ask_and_parse_all()
-        building = self.controller.get_building(get_params['id'])
+        building = self.controller.get_building(get_params['location'])
 
         if building:
             self.output.success(self.get_building_success_message % building, end='\n\n')
