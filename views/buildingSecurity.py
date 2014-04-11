@@ -92,9 +92,9 @@ class BuildingSecurityView(BaseView):
         
         # Badge Reader update prompts
         badgeReader_update_prompts = OrderedDict()
-        badgeReader_update_prompts['old_door_id'] = prompts.TextPrompt('Old door ID')
-        badgeReader_update_prompts['new_door_id'] = prompts.TextPrompt('New door ID')
-        badgeReader_update_prompts['badgeReader_id'] = prompts.TextPrompt('Badge Reader ID')
+        badgeReader_update_prompts['old_badgeReader_id'] = prompts.TextPrompt('Old badge reader ID')
+        badgeReader_update_prompts['new_badgeReader_id'] = prompts.TextPrompt('New badge reader ID')
+        badgeReader_update_prompts['door_id'] = prompts.TextPrompt('door ID')
         self.badgeReader_update_prompt_list = prompts.PromptList(badgeReader_update_prompts)
         
         # Badge Reader retrieval prompts
@@ -113,8 +113,9 @@ class BuildingSecurityView(BaseView):
         
         # Camera update prompts
         camera_update_prompts = OrderedDict()
-        camera_update_prompts['new_location'] = prompts.TextPrompt('New location')
-        camera_update_prompts['camera_id'] = prompts.TextPrompt('Camera ID')
+        camera_update_prompts['old_camera_id'] = prompts.TextPrompt('Old Camera ID')
+        camera_update_prompts['new_camera_id'] = prompts.TextPrompt('New Camera ID')
+        camera_update_prompts['location'] = prompts.TextPrompt('Location')
         self.camera_update_prompt_list = prompts.PromptList(camera_update_prompts)
         
          # Camera retrieval prompts
@@ -133,8 +134,9 @@ class BuildingSecurityView(BaseView):
         
         # Door update prompts
         door_update_prompts = OrderedDict()
-        door_update_prompts['new_location'] = prompts.TextPrompt('New location')
-        door_update_prompts['door_id'] = prompts.TextPrompt('Door ID')
+        door_update_prompts['old_door_id'] = prompts.TextPrompt('Old Door ID')
+        door_update_prompts['new_door_id'] = prompts.TextPrompt('New Door ID')
+        door_update_prompts['location'] = prompts.TextPrompt('Location')
         self.door_update_prompt_list = prompts.PromptList(door_update_prompts)
         
          # Door retrieval prompts
@@ -184,7 +186,7 @@ class BuildingSecurityView(BaseView):
         """
         update_params = self.badgeReader_update_prompt_list.ask_and_parse_all()
         success = self.controller.update_badgeReader(
-            update_params['old_door_id'], update_params['new_door_id'], update_params['badgeReader_id']
+            update_params['old_badgeReader_id'], update_params['new_badgeReader_id'], update_params['door_id']
         )
 
         if success:
@@ -240,7 +242,7 @@ class BuildingSecurityView(BaseView):
         """
         update_params = self.camera_update_prompt_list.ask_and_parse_all()
         success = self.controller.update_camera(
-            update_params['new_location'], update_params['camera_id']
+            update_params['old_camera_id'], update_params['new_camera_id'], update_params['location']
         )
 
         if success:
@@ -296,7 +298,7 @@ class BuildingSecurityView(BaseView):
         """
         update_params = self.door_update_prompt_list.ask_and_parse_all()
         success = self.controller.update_door(
-            update_params['new_location'], update_params['door_id']
+            update_params['old_door_id'], update_params['new_door_id'], update_params['location']
         )
 
         if success:
