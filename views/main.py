@@ -5,6 +5,7 @@ from collections import OrderedDict
 from views import BaseView
 from views.building import BuildingView
 from views.personnel import PersonnelView
+from views.buildingSecurity import BuildingSecurityView
 from views.prompts import MenuPrompt
 
 
@@ -20,6 +21,7 @@ class MainView(BaseView):
         options = OrderedDict()
         options['buildings'] = 'Manage Buildings'
         options['personnel'] = 'Manage Personnel'
+        options['buildingSecurity'] = 'Manage Building Security'
         options['exit'] = 'Exit'
         self.menu_prompt = MenuPrompt(options)
 
