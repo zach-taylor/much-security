@@ -161,5 +161,60 @@ class PersonnelView(BaseView):
 
         getattr(self, response)()
         
+    def create_badgeReader(self):
+        """
+        Create a new badgeReader by prompting the user for the necessary information.
+        The gathered parameters will be passed on to the BuildingSecurity controller.
+        """
+        create_params = self.badgeReader_creation_prompt_list.ask_and_parse_all()
+        success = self.controller.create_badgeReader(
+            create_params['door_id'], create_params['badgeReader_id']
+        )
+
+        if success:
+            self.output.success(self.create_badgeReader_success_message, end='\n\n')
+        else:
+            self.output.fail(self.create_badgeReader_error_message, end='\n\n')
+
+    def update_badgeReader(self):
+        """
+        Update an existing badge reader by prompting the user for the badgeReader ID and
+        the information to be updated. The gathered parameters will be passed on
+        to the building security controller.
+        """
+        update_params = self.badgeReader_update_prompt_list.ask_and_parse_all()
+        success = self.controller.update_badgeReader(
+            update_params['old_door_id'], update_params['new_door_id'], update_params['badgeReader_id']
+        )
+
+        if success:
+            self.output.success(self.update_badgeReader_success_message, end='\n\n')
+        else:
+            self.output.fail(self.update_badgeReader_error_message, end='\n\n')
+
+    def delete_badgeReader(self):
+        """
+        Delete an existing badge reader by prompting the user for the badge reader ID.
+        This ID will be passed on to the building security controller.
+        """
+        delete_params = self.badgeReader_deletion_prompt_list.ask_and_parse_all()
+        success = self.controller.delete_badgeReader(delete_params['badgeReader_id'])
+
+        if success:
+            self.output.success(self.delete_badgeReader_success_message, end='\n\n')
+        else:
+            self.output.fail(self.delete_badgeReader_error_message, end='\n\n')
+
+    def get_employee(self):
+        """
+        Get a badge reader. This is not in our design, but it is useful for debugging.
+        """
+        get_params = self.badgeReader_retrieval_prompt_list.ask_and_parse_all()
+        badgeReader = self.controller.get_badgeReader(get_params['badgeReader_id'])
+
+        if badgeReader:
+            self.output.success(self.get_badgeReader_success_message % badgeReader, end='\n\n')
+        else:
+            self.output.fail(self.get_badgeReader_error_message, end='\n\n')
     
         
