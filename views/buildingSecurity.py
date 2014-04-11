@@ -59,3 +59,42 @@ class PersonnelView(BaseView):
 
     delete_door_success_message = 'Door deleted.'
     delete_door_error_message = 'Could not delete door.'
+    
+    def __init__(self, router):
+        super(BuildingSecurityView, self).__init__(router)
+        
+         # BuildingSecurity controller
+        self.controller = BuildingSecurityController()
+        
+        # Personnel view menu
+        menu_options = OrderedDict()
+        menu_options['get_badgeReader'] = 'Get a badge reader'
+        menu_options['create_badgeReader'] = 'Create a new badge reader'
+        menu_options['update_badgeReader'] = 'Update an badge reader'
+        menu_options['delete_badgeReader'] = 'Delete an badge reader'
+        menu_options['get_camera'] = 'Get a camera'
+        menu_options['create_camera'] = 'Create a new camera'
+        menu_options['update_camera'] = 'Update a camera'
+        menu_options['delete_camera'] = 'Delete a camera'
+        menu_options['get_door'] = 'Get a door'
+        menu_options['create_door'] = 'Create a new door'
+        menu_options['update_door'] = 'Update a door'
+        menu_options['delete_door'] = 'Delete a door'
+        menu_options['debug'] = 'Debug'
+        menu_options['back'] = '<< Back'
+        self.menu_prompt = prompts.MenuPrompt(menu_options)
+        
+        # Badge reader creation prompts
+        badgeReader_creation_prompts = OrderedDict()
+        badgeReader_creation_prompts['door_id'] = prompts.TextPrompt('Door Id')
+        badgeReader_creation_prompts['badgeReader_id'] = prompts.TextPrompt('Badge Reader ID')
+        self.badgeReader_creation_prompt_list = prompts.PromptList(badgeReader_creation_prompts)
+        
+        # Badge Reader update prompts
+        badgeReader_update_prompts = OrderedDict()
+        badgeReader_update_prompts['old_badge_id'] = prompts.TextPrompt('Old badge ID')
+        badgeReader_update_prompts['new_badge_id'] = prompts.TextPrompt('New badge ID')
+        badgeReader_update_prompts['name'] = prompts.TextPrompt('Name')
+        self.badgeReader_update_prompt_list = prompts.PromptList(badgeReader_update_prompts)
+        
+        
