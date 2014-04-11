@@ -2,12 +2,12 @@
 from collections import OrderedDict
 
 # application imports
-from controllers.personnel import PersonnelController
+from controllers.buildingSecurity import BuildingSecurityController
 from views import BaseView
 from views import prompts
 
 
-class PersonnelView(BaseView):
+class BuildingSecurityView(BaseView):
     supported_operations = [
         'get_badgeReader',
         'create_badgeReader',
