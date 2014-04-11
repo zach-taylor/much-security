@@ -120,8 +120,46 @@ class PersonnelView(BaseView):
          # Camera retrieval prompts
         camera_retrieval_prompts = OrderedDict()
         camera_retrieval_prompts['camera_id'] = prompts.TextPrompt('camera ID')
-        self.badgeReader_retrieval_prompt_list = prompts.PromptList(camera_retrieval_prompts)
+        self.camera_retrieval_prompt_list = prompts.PromptList(camera_retrieval_prompts)
         
         # Camera deletion prompts (happen to be the same as retrieval)
         self.camera_deletion_prompt_list = self.camera_retrieval_prompt_list
+        
+        # Door creation prompts
+        door_creation_prompts = OrderedDict()
+        door_creation_prompts['location'] = prompts.TextPrompt('Location')
+        door_creation_prompts['door_id'] = prompts.TextPrompt('Door ID')
+        self.door_creation_prompt_list = prompts.PromptList(door_creation_prompts)
+        
+        # Door update prompts
+        door_update_prompts = OrderedDict()
+        door_update_prompts['new_location'] = prompts.TextPrompt('New location')
+        door_update_prompts['door_id'] = prompts.TextPrompt('Door ID')
+        self.door_update_prompt_list = prompts.PromptList(door_update_prompts)
+        
+         # Door retrieval prompts
+        door_retrieval_prompts = OrderedDict()
+        door_retrieval_prompts['door_id'] = prompts.TextPrompt('Door ID')
+        self.door_retrieval_prompt_list = prompts.PromptList(door_retrieval_prompts)
+        
+        # Door deletion prompts (happen to be the same as retrieval)
+        self.door_deletion_prompt_list = self.door_retrieval_prompt_list
+        
+    def get_header(self):
+        return 'Manage Building Security'
+
+    def get_menu_prompt(self):
+        return self.menu_prompt
+
+    def process_menu_selection(self, response):
+        if response == 'back':
+            self.router.back()
+            return
+
+        if response not in self.supported_operations:
+            raise prompts.InvalidResponseException(response)
+
+        getattr(self, response)()
+        
+    
         
