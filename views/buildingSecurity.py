@@ -205,7 +205,7 @@ class PersonnelView(BaseView):
         else:
             self.output.fail(self.delete_badgeReader_error_message, end='\n\n')
 
-    def get_employee(self):
+    def get_badgeReader(self):
         """
         Get a badge reader. This is not in our design, but it is useful for debugging.
         """
@@ -216,5 +216,130 @@ class PersonnelView(BaseView):
             self.output.success(self.get_badgeReader_success_message % badgeReader, end='\n\n')
         else:
             self.output.fail(self.get_badgeReader_error_message, end='\n\n')
+            
+    def create_camera(self):
+        """
+        Create a new camera by prompting the user for the necessary information.
+        The gathered parameters will be passed on to the BuildingSecurity controller.
+        """
+        create_params = self.camera_creation_prompt_list.ask_and_parse_all()
+        success = self.controller.create_camera(
+            create_params['location'], create_params['camera_id']
+        )
+
+        if success:
+            self.output.success(self.create_camera_success_message, end='\n\n')
+        else:
+            self.output.fail(self.create_camera_error_message, end='\n\n')
+
+    def update_camera(self):
+        """
+        Update an existing camera by prompting the user for the camera ID and
+        the information to be updated. The gathered parameters will be passed on
+        to the building security controller.
+        """
+        update_params = self.camera_update_prompt_list.ask_and_parse_all()
+        success = self.controller.update_camera(
+            update_params['new_location'], update_params['camera_id']
+        )
+
+        if success:
+            self.output.success(self.update_camera_success_message, end='\n\n')
+        else:
+            self.output.fail(self.update_camera_error_message, end='\n\n')
+
+    def delete_camera(self):
+        """
+        Delete an existing camera by prompting the user for the camera ID.
+        This ID will be passed on to the building security controller.
+        """
+        delete_params = self.camera_deletion_prompt_list.ask_and_parse_all()
+        success = self.controller.delete_camera(delete_params['camera_id'])
+
+        if success:
+            self.output.success(self.delete_camera_success_message, end='\n\n')
+        else:
+            self.output.fail(self.delete_camera_error_message, end='\n\n')
+
+    def get_camera(self):
+        """
+        Get a camera. This is not in our design, but it is useful for debugging.
+        """
+        get_params = self.camera_retrieval_prompt_list.ask_and_parse_all()
+        camera = self.controller.get_camera(get_params['camera_id'])
+
+        if camera:
+            self.output.success(self.get_camera_success_message % camera, end='\n\n')
+        else:
+            self.output.fail(self.get_camera_error_message, end='\n\n')
+            
+    def create_door(self):
+        """
+        Create a new door by prompting the user for the necessary information.
+        The gathered parameters will be passed on to the BuildingSecurity controller.
+        """
+        create_params = self.door_creation_prompt_list.ask_and_parse_all()
+        success = self.controller.create_door(
+            create_params['location'], create_params['door_id']
+        )
+
+        if success:
+            self.output.success(self.create_door_success_message, end='\n\n')
+        else:
+            self.output.fail(self.create_door_error_message, end='\n\n')
+
+    def update_door(self):
+        """
+        Update an existing door by prompting the user for the door ID and
+        the information to be updated. The gathered parameters will be passed on
+        to the building security controller.
+        """
+        update_params = self.door_update_prompt_list.ask_and_parse_all()
+        success = self.controller.update_door(
+            update_params['new_location'], update_params['door_id']
+        )
+
+        if success:
+            self.output.success(self.update_door_success_message, end='\n\n')
+        else:
+            self.output.fail(self.update_door_error_message, end='\n\n')
+
+    def delete_door(self):
+        """
+        Delete an existing door by prompting the user for the door ID.
+        This ID will be passed on to the building security controller.
+        """
+        delete_params = self.door_deletion_prompt_list.ask_and_parse_all()
+        success = self.controller.delete_door(delete_params['door_id'])
+
+        if success:
+            self.output.success(self.delete_door_success_message, end='\n\n')
+        else:
+            self.output.fail(self.delete_door_error_message, end='\n\n')
+
+    def get_door(self):
+        """
+        Get a door. This is not in our design, but it is useful for debugging.
+        """
+        get_params = self.door_retrieval_prompt_list.ask_and_parse_all()
+        door = self.controller.get_door(get_params['door_id'])
+
+        if door:
+            self.output.success(self.get_door_success_message % door, end='\n\n')
+        else:
+            self.output.fail(self.get_door_error_message, end='\n\n')
+            
+    def debug(self):
+        """
+        Dump the contents of the badgeReader, camera, and door tables for debugging purposes.
+        """
+        dump = {
+            'badgeReader': self.controller.get_badgeReader_debug(),
+            'camera': self.controller.get_camera_debug(),
+            'door': self.controller.get_door_debug()
+        }
+        self.output.warn(dump, end='\n\n')
+            
+    
     
         
