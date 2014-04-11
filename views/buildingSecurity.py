@@ -92,9 +92,36 @@ class PersonnelView(BaseView):
         
         # Badge Reader update prompts
         badgeReader_update_prompts = OrderedDict()
-        badgeReader_update_prompts['old_badge_id'] = prompts.TextPrompt('Old badge ID')
-        badgeReader_update_prompts['new_badge_id'] = prompts.TextPrompt('New badge ID')
-        badgeReader_update_prompts['name'] = prompts.TextPrompt('Name')
+        badgeReader_update_prompts['old_door_id'] = prompts.TextPrompt('Old door ID')
+        badgeReader_update_prompts['new_door_id'] = prompts.TextPrompt('New door ID')
+        badgeReader_update_prompts['badgeReader_id'] = prompts.TextPrompt('Badge Reader ID')
         self.badgeReader_update_prompt_list = prompts.PromptList(badgeReader_update_prompts)
         
+        # Badge Reader retrieval prompts
+        badgeReader_retrieval_prompts = OrderedDict()
+        badgeReader_retrieval_prompts['badgeReader_id'] = prompts.TextPrompt('Badge Reader ID')
+        self.badgeReader_retrieval_prompt_list = prompts.PromptList(badgeReader_retrieval_prompts)
+
+        # Badge Reader deletion prompts (happen to be the same as retrieval)
+        self.badgeReader_deletion_prompt_list = self.badgeReader_retrieval_prompt_list
+        
+        # Camera creation prompts
+        camera_creation_prompts = OrderedDict()
+        camera_creation_prompts['location'] = prompts.TextPrompt('Location')
+        camera_creation_prompts['camera_id'] = prompts.TextPrompt('Camera ID')
+        self.camera_creation_prompt_list = prompts.PromptList(camera_creation_prompts)
+        
+        # Camera update prompts
+        camera_update_prompts = OrderedDict()
+        camera_update_prompts['new_location'] = prompts.TextPrompt('New location')
+        camera_update_prompts['camera_id'] = prompts.TextPrompt('Camera ID')
+        self.camera_update_prompt_list = prompts.PromptList(camera_update_prompts)
+        
+         # Camera retrieval prompts
+        camera_retrieval_prompts = OrderedDict()
+        camera_retrieval_prompts['camera_id'] = prompts.TextPrompt('camera ID')
+        self.badgeReader_retrieval_prompt_list = prompts.PromptList(camera_retrieval_prompts)
+        
+        # Camera deletion prompts (happen to be the same as retrieval)
+        self.camera_deletion_prompt_list = self.camera_retrieval_prompt_list
         
