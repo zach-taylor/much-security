@@ -12,7 +12,8 @@ from views.prompts import MenuPrompt
 class MainView(BaseView):
     next_views = {
         'buildings': BuildingView,
-        'personnel': PersonnelView
+        'personnel': PersonnelView,
+        'buildingSecurity': BuildingSecurityView
     }
 
     def __init__(self, router):
