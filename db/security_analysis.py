@@ -1,5 +1,6 @@
-# lib imports
+# python imports
 from datetime import datetime
+import itertools
 
 # database imports
 from db.table import DatabaseTable
@@ -45,4 +46,27 @@ class SecurityAnalysisDatabaseMixin(object):
         return self.badge_reader_log_entries.dump()
 
     def search_entry(self, badge_id=None, time=None):
-        pass
+        # get all search entries
+        entries = list(itertools.chain.from_iterable([
+            self.employee_log_entries.get_all(),
+            self.visitor_log_entries.get_all(),
+            self.badge_reader_log_entries.get_all()
+        ]))
+
+        # find entries matching search criteria
+        matches = []
+        for entry in entries:
+            match = True
+
+            # filter by badge_id
+            if badge_id and entry.badge_id != badge_id:
+                match = False
+
+            # filter by time
+            if time and entry.time != time:
+                match = False
+
+            if match:
+                matches.append(entry)
+
+        return matches

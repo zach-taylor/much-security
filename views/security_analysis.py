@@ -150,7 +150,19 @@ class SecurityAnalysisView(BaseView):
     def search_entry(self):
         search_params = self.search_entry_prompt_list.ask_and_parse_all()
         results = self.controller.search_entry(search_params['badge_id'], search_params['time'])
-        self.output.success(self.search_entry_success_message % results, end='\n\n')
+
+        # build user friendly result list
+        result_list = '\n\n'
+        for result in results:
+            result_list += '%s\n' % result.entry_id
+            if hasattr(result, 'badge_reader_id'):
+                result_list += '\tbadge reader: %s\n' % result.badge_reader_id
+            result_list += '\tbadge: %s\n' % result.badge_id
+            result_list += '\ttime: %s\n' % result.time
+            result_list += '\tresult: %s\n' % result.result
+            result_list += '\n'
+
+        self.output.success(self.search_entry_success_message % result_list, end='\n\n')
 
     def debug(self):
         dump = {

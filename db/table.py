@@ -1,6 +1,9 @@
 # python imports
 import json
 
+# application imports
+from models import Model
+
 
 class DatabaseTable(object):
 
@@ -38,6 +41,12 @@ class DatabaseTable(object):
         if key in self.table:
             return json.loads(self.table[key])
         return None
+
+    def get_all(self):
+        all_entries = []
+        for item in self.table.itervalues():
+            all_entries.append(Model(**json.loads(item)))
+        return all_entries
 
     def delete(self, key):
         if key in self.table:
