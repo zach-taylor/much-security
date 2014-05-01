@@ -176,6 +176,11 @@ class SecurityAnalysisView(BaseView):
         report = self.controller.badge_reader_report()
         self.output.success(self.badge_reader_report_success_message % report, end='\n\n')
 
+    def all_reports(self):
+        self.employee_report()
+        self.visitor_report()
+        self.badge_reader_report()
+
     def debug(self):
         dump = {
             'employee_entries': self.controller.get_employee_log_entry_debug(),
