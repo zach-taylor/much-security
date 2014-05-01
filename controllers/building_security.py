@@ -1,7 +1,7 @@
 # application imports
 from db import get_database_support
 from controllers import BaseController
-from models.badgeReader import BadgeReader
+from models.badge_reader import BadgeReader
 from models.camera import Camera
 from models.door import Door
 
@@ -12,32 +12,32 @@ class BuildingSecurityController(BaseController):
         super(BuildingSecurityController, self).__init__()
         self.db = get_database_support()
 
-    def create_badgeReader(self, door_id, badgeReader_id):
-        badgeReader = BadgeReader(door_id=door_id, badgeReader_id=badgeReader_id)
-        return self.db.put_badgeReader(badgeReader)
+    def create_badge_reader(self, door_id, badge_reader_id):
+        badge_reader = BadgeReader(door_id=door_id, badge_reader_id=badge_reader_id)
+        return self.db.put_badge_reader(badge_reader)
 
-    def get_badgeReader(self, badgeReader_id):
-        badgeReader_data = self.db.get_badgeReader(badgeReader_id)
-        if not badgeReader_data:
+    def get_badge_reader(self, badge_reader_id):
+        badge_reader_data = self.db.get_badge_reader(badge_reader_id)
+        if not badge_reader_data:
             return None
-        return BadgeReader(**badgeReader_data)
+        return BadgeReader(**badge_reader_data)
 
-    def update_badgeReader(self, old_badgeReader_id, new_badgeReader_id, door_id):
-        badgeReader = self.get_badgeReader(old_badgeReader_id)
-        if not badgeReader:
+    def update_badge_reader(self, old_badge_reader_id, new_badge_reader_id, door_id):
+        badge_reader = self.get_badge_reader(old_badge_reader_id)
+        if not badge_reader:
             return False
 
-        if new_badgeReader_id:
-            badgeReader.badgeReader_id = new_badgeReader_id
+        if new_badge_reader_id:
+            badge_reader.badge_reader_id = new_badge_reader_id
         if door_id:
-            badgeReader.door_id = door_id
-        return self.db.update_badgeReader(badgeReader, old_key=old_badgeReader_id)
+            badge_reader.door_id = door_id
+        return self.db.update_badge_reader(badge_reader, old_key=old_badge_reader_id)
 
-    def delete_badgeReader(self, badgeReader_id):
-        return self.db.delete_badgeReader(badgeReader_id)
+    def delete_badge_reader(self, badge_reader_id):
+        return self.db.delete_badge_reader(badge_reader_id)
 
-    def get_badgeReader_debug(self):
-        return self.db.dump_badgeReader()
+    def get_badge_reader_debug(self):
+        return self.db.dump_badge_readers()
     
     def create_camera(self, location, camera_id):
         camera = Camera(location=location, camera_id=camera_id)
@@ -64,7 +64,7 @@ class BuildingSecurityController(BaseController):
         return self.db.delete_camera(camera_id)
 
     def get_camera_debug(self):
-        return self.db.dump_camera()
+        return self.db.dump_cameras()
     
     def create_door(self, location, door_id):
         door = Door(location=location, door_id=door_id)
@@ -91,4 +91,4 @@ class BuildingSecurityController(BaseController):
         return self.db.delete_door(door_id)
 
     def get_door_debug(self):
-        return self.db.dump_door()
+        return self.db.dump_doors()

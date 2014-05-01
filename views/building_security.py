@@ -2,17 +2,17 @@
 from collections import OrderedDict
 
 # application imports
-from controllers.buildingSecurity import BuildingSecurityController
+from controllers.building_security import BuildingSecurityController
 from views import BaseView
 from views import prompts
 
 
 class BuildingSecurityView(BaseView):
     supported_operations = [
-        'get_badgeReader',
-        'create_badgeReader',
-        'update_badgeReader',
-        'delete_badgeReader',
+        'get_badge_reader',
+        'create_badge_reader',
+        'update_badge_reader',
+        'delete_badge_reader',
         'get_camera',
         'create_camera',
         'update_camera',
@@ -24,17 +24,17 @@ class BuildingSecurityView(BaseView):
         'debug'
     ]
     
-    create_badgeReader_success_message = 'Badge reader created.'
-    create_badgeReader_error_message = 'Could not create badge reader.'
+    create_badge_reader_success_message = 'Badge reader created.'
+    create_badge_reader_error_message = 'Could not create badge reader.'
 
-    update_badgeReader_success_message = 'Badge reader updated.'
-    update_employee_error_message = 'Could not update badge reader.'
+    update_badge_reader_success_message = 'Badge reader updated.'
+    update_badge_reader_error_message = 'Could not update badge reader.'
 
-    get_badgeReader_success_message = 'Badge reader retrieved: %s'
-    get_badgeReader_error_message = 'Could not retrieve badge reader.'
+    get_badge_reader_success_message = 'Badge reader retrieved: %s'
+    get_badge_reader_error_message = 'Could not retrieve badge reader.'
 
-    delete_badgeReader_success_message = 'Badge reader deleted.'
-    delete_badgeReader_error_message = 'Could not delete badge reader.'
+    delete_badge_reader_success_message = 'Badge reader deleted.'
+    delete_badge_reader_error_message = 'Could not delete badge reader.'
 
     create_camera_success_message = 'Camera created.'
     create_camera_error_message = 'Could not create camera.'
@@ -68,10 +68,10 @@ class BuildingSecurityView(BaseView):
         
         # Personnel view menu
         menu_options = OrderedDict()
-        menu_options['get_badgeReader'] = 'Get a badge reader'
-        menu_options['create_badgeReader'] = 'Create a new badge reader'
-        menu_options['update_badgeReader'] = 'Update an badge reader'
-        menu_options['delete_badgeReader'] = 'Delete an badge reader'
+        menu_options['get_badge_reader'] = 'Get a badge reader'
+        menu_options['create_badge_reader'] = 'Create a new badge reader'
+        menu_options['update_badge_reader'] = 'Update an badge reader'
+        menu_options['delete_badge_reader'] = 'Delete an badge reader'
         menu_options['get_camera'] = 'Get a camera'
         menu_options['create_camera'] = 'Create a new camera'
         menu_options['update_camera'] = 'Update a camera'
@@ -85,25 +85,25 @@ class BuildingSecurityView(BaseView):
         self.menu_prompt = prompts.MenuPrompt(menu_options)
         
         # Badge reader creation prompts
-        badgeReader_creation_prompts = OrderedDict()
-        badgeReader_creation_prompts['door_id'] = prompts.TextPrompt('Door Id')
-        badgeReader_creation_prompts['badgeReader_id'] = prompts.TextPrompt('Badge Reader ID')
-        self.badgeReader_creation_prompt_list = prompts.PromptList(badgeReader_creation_prompts)
+        badge_reader_creation_prompts = OrderedDict()
+        badge_reader_creation_prompts['door_id'] = prompts.TextPrompt('Door Id')
+        badge_reader_creation_prompts['badge_reader_id'] = prompts.TextPrompt('Badge Reader ID')
+        self.badge_reader_creation_prompt_list = prompts.PromptList(badge_reader_creation_prompts)
         
         # Badge Reader update prompts
-        badgeReader_update_prompts = OrderedDict()
-        badgeReader_update_prompts['old_badgeReader_id'] = prompts.TextPrompt('Old badge reader ID')
-        badgeReader_update_prompts['new_badgeReader_id'] = prompts.TextPrompt('New badge reader ID')
-        badgeReader_update_prompts['door_id'] = prompts.TextPrompt('door ID')
-        self.badgeReader_update_prompt_list = prompts.PromptList(badgeReader_update_prompts)
+        badge_reader_update_prompts = OrderedDict()
+        badge_reader_update_prompts['old_badge_reader_id'] = prompts.TextPrompt('Old badge reader ID')
+        badge_reader_update_prompts['new_badge_reader_id'] = prompts.TextPrompt('New badge reader ID')
+        badge_reader_update_prompts['door_id'] = prompts.TextPrompt('door ID')
+        self.badge_reader_update_prompt_list = prompts.PromptList(badge_reader_update_prompts)
         
         # Badge Reader retrieval prompts
-        badgeReader_retrieval_prompts = OrderedDict()
-        badgeReader_retrieval_prompts['badgeReader_id'] = prompts.TextPrompt('Badge Reader ID')
-        self.badgeReader_retrieval_prompt_list = prompts.PromptList(badgeReader_retrieval_prompts)
+        badge_reader_retrieval_prompts = OrderedDict()
+        badge_reader_retrieval_prompts['badge_reader_id'] = prompts.TextPrompt('Badge Reader ID')
+        self.badge_reader_retrieval_prompt_list = prompts.PromptList(badge_reader_retrieval_prompts)
 
         # Badge Reader deletion prompts (happen to be the same as retrieval)
-        self.badgeReader_deletion_prompt_list = self.badgeReader_retrieval_prompt_list
+        self.badge_reader_deletion_prompt_list = self.badge_reader_retrieval_prompt_list
         
         # Camera creation prompts
         camera_creation_prompts = OrderedDict()
@@ -163,61 +163,61 @@ class BuildingSecurityView(BaseView):
 
         getattr(self, response)()
         
-    def create_badgeReader(self):
+    def create_badge_reader(self):
         """
-        Create a new badgeReader by prompting the user for the necessary information.
+        Create a new badge_reader by prompting the user for the necessary information.
         The gathered parameters will be passed on to the BuildingSecurity controller.
         """
-        create_params = self.badgeReader_creation_prompt_list.ask_and_parse_all()
-        success = self.controller.create_badgeReader(
-            create_params['door_id'], create_params['badgeReader_id']
+        create_params = self.badge_reader_creation_prompt_list.ask_and_parse_all()
+        success = self.controller.create_badge_reader(
+            create_params['door_id'], create_params['badge_reader_id']
         )
 
         if success:
-            self.output.success(self.create_badgeReader_success_message, end='\n\n')
+            self.output.success(self.create_badge_reader_success_message, end='\n\n')
         else:
-            self.output.fail(self.create_badgeReader_error_message, end='\n\n')
+            self.output.fail(self.create_badge_reader_error_message, end='\n\n')
 
-    def update_badgeReader(self):
+    def update_badge_reader(self):
         """
-        Update an existing badge reader by prompting the user for the badgeReader ID and
+        Update an existing badge reader by prompting the user for the badge_reader ID and
         the information to be updated. The gathered parameters will be passed on
         to the building security controller.
         """
-        update_params = self.badgeReader_update_prompt_list.ask_and_parse_all()
-        success = self.controller.update_badgeReader(
-            update_params['old_badgeReader_id'], update_params['new_badgeReader_id'], update_params['door_id']
+        update_params = self.badge_reader_update_prompt_list.ask_and_parse_all()
+        success = self.controller.update_badge_reader(
+            update_params['old_badge_reader_id'], update_params['new_badge_reader_id'], update_params['door_id']
         )
 
         if success:
-            self.output.success(self.update_badgeReader_success_message, end='\n\n')
+            self.output.success(self.update_badge_reader_success_message, end='\n\n')
         else:
-            self.output.fail(self.update_badgeReader_error_message, end='\n\n')
+            self.output.fail(self.update_badge_reader_error_message, end='\n\n')
 
-    def delete_badgeReader(self):
+    def delete_badge_reader(self):
         """
         Delete an existing badge reader by prompting the user for the badge reader ID.
         This ID will be passed on to the building security controller.
         """
-        delete_params = self.badgeReader_deletion_prompt_list.ask_and_parse_all()
-        success = self.controller.delete_badgeReader(delete_params['badgeReader_id'])
+        delete_params = self.badge_reader_deletion_prompt_list.ask_and_parse_all()
+        success = self.controller.delete_badge_reader(delete_params['badge_reader_id'])
 
         if success:
-            self.output.success(self.delete_badgeReader_success_message, end='\n\n')
+            self.output.success(self.delete_badge_reader_success_message, end='\n\n')
         else:
-            self.output.fail(self.delete_badgeReader_error_message, end='\n\n')
+            self.output.fail(self.delete_badge_reader_error_message, end='\n\n')
 
-    def get_badgeReader(self):
+    def get_badge_reader(self):
         """
         Get a badge reader. This is not in our design, but it is useful for debugging.
         """
-        get_params = self.badgeReader_retrieval_prompt_list.ask_and_parse_all()
-        badgeReader = self.controller.get_badgeReader(get_params['badgeReader_id'])
+        get_params = self.badge_reader_retrieval_prompt_list.ask_and_parse_all()
+        badge_reader = self.controller.get_badge_reader(get_params['badge_reader_id'])
 
-        if badgeReader:
-            self.output.success(self.get_badgeReader_success_message % badgeReader, end='\n\n')
+        if badge_reader:
+            self.output.success(self.get_badge_reader_success_message % badge_reader, end='\n\n')
         else:
-            self.output.fail(self.get_badgeReader_error_message, end='\n\n')
+            self.output.fail(self.get_badge_reader_error_message, end='\n\n')
             
     def create_camera(self):
         """
@@ -333,15 +333,11 @@ class BuildingSecurityView(BaseView):
             
     def debug(self):
         """
-        Dump the contents of the badgeReader, camera, and door tables for debugging purposes.
+        Dump the contents of the badge_reader, camera, and door tables for debugging purposes.
         """
         dump = {
-            'badgeReader': self.controller.get_badgeReader_debug(),
+            'badge_reader': self.controller.get_badge_reader_debug(),
             'camera': self.controller.get_camera_debug(),
             'door': self.controller.get_door_debug()
         }
         self.output.warn(dump, end='\n\n')
-            
-    
-    
-        

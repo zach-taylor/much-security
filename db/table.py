@@ -28,7 +28,7 @@ class DatabaseTable(object):
         return '%s%s' % (self.id_prefix, self.id_count)
 
     def set(self, entity, key=None):
-        if key is None:
+        if not key:
             key = self.get_next_uid()
         self.table[key] = entity.to_JSON()
         self.commit()

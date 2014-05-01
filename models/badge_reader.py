@@ -1,5 +1,5 @@
 from models.building_security import BuildingSecurity
 
 
-class Camera(BuildingSecurity):
+class BadgeReader(BuildingSecurity):
     pass

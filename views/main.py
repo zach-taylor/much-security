@@ -5,7 +5,8 @@ from collections import OrderedDict
 from views import BaseView
 from views.building import BuildingView
 from views.personnel import PersonnelView
-from views.buildingSecurity import BuildingSecurityView
+from views.building_security import BuildingSecurityView
+from views.security_analysis import SecurityAnalysisView
 from views.prompts import MenuPrompt
 
 
@@ -13,7 +14,8 @@ class MainView(BaseView):
     next_views = {
         'buildings': BuildingView,
         'personnel': PersonnelView,
-        'buildingSecurity': BuildingSecurityView
+        'building_security': BuildingSecurityView,
+        'security_analysis': SecurityAnalysisView
     }
 
     def __init__(self, router):
@@ -22,7 +24,8 @@ class MainView(BaseView):
         options = OrderedDict()
         options['buildings'] = 'Manage Buildings'
         options['personnel'] = 'Manage Personnel'
-        options['buildingSecurity'] = 'Manage Building Security'
+        options['building_security'] = 'Manage Building Security'
+        options['security_analysis'] = 'Security Analysis'
         options['exit'] = 'Exit'
         self.menu_prompt = MenuPrompt(options)
 
