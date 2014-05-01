@@ -69,6 +69,7 @@ class SecurityAnalysisView(BaseView):
         employee_entry_prompts['entry_id'] = prompts.TextPrompt('Entry ID (auto)')
         employee_entry_prompts['badge_id'] = prompts.TextPrompt('Employee badge ID')
         employee_entry_prompts['time'] = prompts.TextPrompt('Time (now)')
+        employee_entry_prompts['location'] = prompts.TextPrompt('Location')
         employee_entry_prompts['result'] = prompts.TextPrompt('Result (success)')
         self.employee_entry_prompt_list = prompts.PromptList(employee_entry_prompts)
 
@@ -77,6 +78,7 @@ class SecurityAnalysisView(BaseView):
         visitor_entry_prompts['entry_id'] = prompts.TextPrompt('Entry ID (auto)')
         visitor_entry_prompts['badge_id'] = prompts.TextPrompt('Visitor badge ID')
         visitor_entry_prompts['time'] = prompts.TextPrompt('Time (now)')
+        visitor_entry_prompts['location'] = prompts.TextPrompt('Location')
         visitor_entry_prompts['result'] = prompts.TextPrompt('Result (success)')
         self.visitor_entry_prompt_list = prompts.PromptList(visitor_entry_prompts)
 
@@ -114,7 +116,7 @@ class SecurityAnalysisView(BaseView):
     def employee_entry(self):
         entry_params = self.employee_entry_prompt_list.ask_and_parse_all()
         success = self.controller.employee_entry(
-            entry_params['entry_id'], entry_params['badge_id'], entry_params['time'],
+            entry_params['entry_id'], entry_params['badge_id'], entry_params['time'], entry_params['location'],
             entry_params['result']
         )
 
@@ -126,7 +128,7 @@ class SecurityAnalysisView(BaseView):
     def visitor_entry(self):
         entry_params = self.visitor_entry_prompt_list.ask_and_parse_all()
         success = self.controller.visitor_entry(
-            entry_params['entry_id'], entry_params['badge_id'], entry_params['time'],
+            entry_params['entry_id'], entry_params['badge_id'], entry_params['time'], entry_params['location'],
             entry_params['result']
         )
 
