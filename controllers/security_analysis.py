@@ -1,6 +1,7 @@
 # application imports
 from db import get_database_support
 from controllers import BaseController
+from personnel import PersonnelController
 from models.log_entry import BadgeReaderLogEntry
 from models.log_entry import EmployeeLogEntry
 from models.log_entry import VisitorLogEntry
@@ -13,7 +14,7 @@ class SecurityAnalysisController(BaseController):
         self.db = get_database_support()
 
     def employee_entry(self, entry_id, badge_id, time, location, result):
-        log_entry = EmployeeLogEntry(entry_id=entry_id, badge_id=badge_id, time=time, location=location, result=result)
+        log_entry = EmployeeLogEntry(entry_id=entry_id, badge_id=badge_id, name=PersonnelController().get_employee(badge_id).name, time=time, location=location, result=result)
         return self.db.put_employee_log_entry(log_entry)
 
     def get_employee_log_entry_debug(self):
@@ -41,11 +42,10 @@ class SecurityAnalysisController(BaseController):
         entries = self.db.get_all_employee_entries()
 
         report = '\n\n'
-        report += '   ID    \t|   Badge\t|   Time\t\t| Location\t|   Result\n'
+        report += '   ID    \t|   Badge\t|     Name\t|   Time\t\t| Location\t|   Result\n'
         report += '--------------------------------------------------------------------\n'
         for entry in entries:
-            report += '   %s  \t|   %s\t|   %s\t|     %s\t|   %s\n' % (entry.entry_id, entry.badge_id,
-                                                               entry.time, entry.location, entry.result)
+            report += '   %s  \t|    %s\t|      %s\t|   %s\t|     %s\t|   %s\n' % (entry.entry_id, entry.badge_id, entry.name, entry.time, entry.location, entry.result)
 
         return report
 
