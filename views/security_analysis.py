@@ -89,6 +89,12 @@ class SecurityAnalysisView(BaseView):
         badge_reader_entry_prompts['result'] = prompts.TextPrompt('Result (success)')
         self.badge_reader_entry_prompt_list = prompts.PromptList(badge_reader_entry_prompts)
 
+        # Search entry prompts
+        search_entry_prompts = OrderedDict()
+        search_entry_prompts['badge_id'] = prompts.TextPrompt('Badge ID')
+        search_entry_prompts['time'] = prompts.TextPrompt('Time')
+        self.search_entry_prompt_list = prompts.PromptList(search_entry_prompts)
+
     def get_header(self):
         return 'Security Analysis'
 
@@ -140,6 +146,11 @@ class SecurityAnalysisView(BaseView):
             self.output.success(self.badge_reader_entry_success_message, end='\n\n')
         else:
             self.output.fail(self.badge_reader_entry_error_message, end='\n\n')
+
+    def search_entry(self):
+        search_params = self.search_entry_prompt_list.ask_and_parse_all()
+        results = self.controller.search_entry(search_params['badge_id'], search_params['time'])
+        self.output.success(self.search_entry_success_message % results, end='\n\n')
 
     def debug(self):
         dump = {

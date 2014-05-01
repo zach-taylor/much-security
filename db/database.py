@@ -11,15 +11,12 @@ from db.visitor import VisitorDatabaseMixin
 from db.badge_reader import BadgeReaderDatabaseMixin
 from db.camera import CameraDatabaseMixin
 from db.door import DoorDatabaseMixin
-from db.log_entry import EmployeeLogEntryDatabaseMixin
-from db.log_entry import VisitorLogEntryDatabaseMixin
-from db.log_entry import BadgeReaderLogEntryDatabaseMixin
+from db.security_analysis import SecurityAnalysisDatabaseMixin
 
 
 class DatabaseSupport(BuildingDatabaseMixin, EmployeeDatabaseMixin, VisitorDatabaseMixin,
                       BadgeReaderDatabaseMixin, CameraDatabaseMixin, DoorDatabaseMixin,
-                      EmployeeLogEntryDatabaseMixin, VisitorLogEntryDatabaseMixin,
-                      BadgeReaderLogEntryDatabaseMixin):
+                      SecurityAnalysisDatabaseMixin):
 
     database_file = 'securitydb'
 
@@ -34,6 +31,4 @@ class DatabaseSupport(BuildingDatabaseMixin, EmployeeDatabaseMixin, VisitorDatab
         BadgeReaderDatabaseMixin.__init__(self)
         CameraDatabaseMixin.__init__(self)
         DoorDatabaseMixin.__init__(self)
-        EmployeeLogEntryDatabaseMixin.__init__(self)
-        VisitorLogEntryDatabaseMixin.__init__(self)
-        BadgeReaderLogEntryDatabaseMixin.__init__(self)
+        SecurityAnalysisDatabaseMixin.__init__(self)
