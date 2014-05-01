@@ -36,3 +36,42 @@ class SecurityAnalysisController(BaseController):
 
     def search_entry(self, badge_id, time):
         return self.db.search_entry(badge_id=badge_id, time=time)
+
+    def employee_report(self):
+        entries = self.db.get_all_employee_entries()
+
+        report = '\n\n'
+        report += '   ID    \t|   Badge\t|   Time\t\t|   Result\n'
+        report += '--------------------------------------------------------------------\n'
+        for entry in entries:
+            report += '   %s  \t|   %s\t\t|   %s\t|   %s\n' % (entry.entry_id, entry.badge_id,
+                                                               entry.time, entry.result)
+
+        return report
+
+    def visitor_report(self):
+        entries = self.db.get_all_visitor_entries()
+
+        report = '\n\n'
+        report += '   ID    \t|   Badge\t|   Time\t\t|   Result\n'
+        report += '--------------------------------------------------------------------\n'
+        for entry in entries:
+            report += '   %s  \t|   %s\t\t|   %s\t|   %s\n' % (entry.entry_id, entry.badge_id,
+                                                               entry.time, entry.result)
+
+        return report
+
+    def badge_reader_report(self):
+        entries = self.db.get_all_badge_reader_entries()
+
+        report = '\n\n'
+        report += '   ID    \t|   Reader\t|   Badge\t|   Time\t\t|   Result\n'
+        report += '------------------------------------------------------------------------------------\n'
+        for entry in entries:
+            report += '   %s  \t|   %s\t\t|   %s\t\t|   %s\t|   %s\n' % (entry.entry_id,
+                                                                         entry.badge_reader_id,
+                                                                         entry.badge_id,
+                                                                         entry.time,
+                                                                         entry.result)
+
+        return report

@@ -164,6 +164,18 @@ class SecurityAnalysisView(BaseView):
 
         self.output.success(self.search_entry_success_message % result_list, end='\n\n')
 
+    def employee_report(self):
+        report = self.controller.employee_report()
+        self.output.success(self.employee_report_success_message % report, end='\n\n')
+
+    def visitor_report(self):
+        report = self.controller.visitor_report()
+        self.output.success(self.visitor_report_success_message % report, end='\n\n')
+
+    def badge_reader_report(self):
+        report = self.controller.badge_reader_report()
+        self.output.success(self.badge_reader_report_success_message % report, end='\n\n')
+
     def debug(self):
         dump = {
             'employee_entries': self.controller.get_employee_log_entry_debug(),

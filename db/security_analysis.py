@@ -30,17 +30,26 @@ class SecurityAnalysisDatabaseMixin(object):
     def put_employee_log_entry(self, log_entry):
         return self.put_log_entry(self.employee_log_entries, log_entry)
 
+    def get_all_employee_entries(self):
+        return self.employee_log_entries.get_all()
+
     def dump_employee_log_entries(self):
         return self.employee_log_entries.dump()
 
     def put_visitor_log_entry(self, log_entry):
         return self.put_log_entry(self.visitor_log_entries, log_entry)
 
+    def get_all_visitor_entries(self):
+        return self.visitor_log_entries.get_all()
+
     def dump_visitor_log_entries(self):
         return self.visitor_log_entries.dump()
 
     def put_badge_reader_log_entry(self, log_entry):
         return self.put_log_entry(self.badge_reader_log_entries, log_entry)
+
+    def get_all_badge_reader_entries(self):
+        return self.badge_reader_log_entries.get_all()
 
     def dump_badge_reader_log_entries(self):
         return self.badge_reader_log_entries.dump()
