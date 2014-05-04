@@ -66,8 +66,8 @@ class BuildingSecurityController(BaseController):
     def get_camera_debug(self):
         return self.db.dump_cameras()
     
-    def create_door(self, location, door_id):
-        door = Door(location=location, door_id=door_id)
+    def create_door(self, location, door_id, locked):
+        door = Door(location=location, door_id=door_id, locked=locked)
         return self.db.put_door(door)
 
     def get_door(self, door_id):
@@ -76,7 +76,7 @@ class BuildingSecurityController(BaseController):
             return None
         return Door(**door_data)
 
-    def update_door(self, old_door_id, new_door_id, location):
+    def update_door(self, old_door_id, new_door_id, location, locked):
         door = self.get_door(old_door_id)
         if not door:
             return False
@@ -85,6 +85,8 @@ class BuildingSecurityController(BaseController):
             door.door_id = new_door_id
         if location:
             door.location = location
+        if locked:
+            door.locked = locked
         return self.db.update_door(door, old_key=old_door_id)
 
     def delete_door(self, door_id):

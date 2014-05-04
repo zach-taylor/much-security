@@ -12,6 +12,8 @@ class DoorDatabaseMixin(object):
         self.doors = DatabaseTable(db, 'doors', 'd')
 
     def put_door(self, door):
+        if not door.locked:
+            door.locked = 'True'
         return self.doors.set(door, key=door.door_id)
 
     def get_door(self, door_id):

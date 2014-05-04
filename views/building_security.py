@@ -130,6 +130,7 @@ class BuildingSecurityView(BaseView):
         door_creation_prompts = OrderedDict()
         door_creation_prompts['location'] = prompts.TextPrompt('Location')
         door_creation_prompts['door_id'] = prompts.TextPrompt('Door ID')
+        door_creation_prompts['locked'] = prompts.TextPrompt('Locked (True)')
         self.door_creation_prompt_list = prompts.PromptList(door_creation_prompts)
         
         # Door update prompts
@@ -137,6 +138,7 @@ class BuildingSecurityView(BaseView):
         door_update_prompts['old_door_id'] = prompts.TextPrompt('Old Door ID')
         door_update_prompts['new_door_id'] = prompts.TextPrompt('New Door ID')
         door_update_prompts['location'] = prompts.TextPrompt('Location')
+        door_update_prompts['locked'] = prompts.TextPrompt('Locked')
         self.door_update_prompt_list = prompts.PromptList(door_update_prompts)
         
          # Door retrieval prompts
@@ -282,7 +284,7 @@ class BuildingSecurityView(BaseView):
         """
         create_params = self.door_creation_prompt_list.ask_and_parse_all()
         success = self.controller.create_door(
-            create_params['location'], create_params['door_id']
+            create_params['location'], create_params['door_id'], create_params['locked']
         )
 
         if success:
@@ -298,7 +300,8 @@ class BuildingSecurityView(BaseView):
         """
         update_params = self.door_update_prompt_list.ask_and_parse_all()
         success = self.controller.update_door(
-            update_params['old_door_id'], update_params['new_door_id'], update_params['location']
+            update_params['old_door_id'], update_params['new_door_id'], update_params['location'],
+            update_params['locked']
         )
 
         if success:
