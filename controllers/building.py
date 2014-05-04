@@ -32,5 +32,16 @@ class BuildingController(BaseController):
     def delete_building(self, location):
         return self.db.delete_building(location)
 
+    def lockdown_building(self, location):
+        building = self.get_building(location)
+        if not building:
+            return False
+
+        doors = self.db.get_all_doors(building.location)
+        for d in doors:
+            d.locked = 'True'
+            self.db.update_door(d)
+        return True
+
     def get_building_debug(self):
         return self.db.dump_buildings()

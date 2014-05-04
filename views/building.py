@@ -13,6 +13,7 @@ class BuildingView(BaseView):
         'create',
         'update',
         'delete',
+        'lockdown',
         'debug'
     ]
 
@@ -28,6 +29,9 @@ class BuildingView(BaseView):
     delete_building_success_message = 'Building deleted.'
     delete_building_error_message = 'Could not delete building.'
 
+    lockdown_building_success_message = 'Building locked down.'
+    lockdown_building_error_message = 'Could not lock down building.'
+
     def __init__(self, router):
         super(BuildingView, self).__init__(router)
 
@@ -40,6 +44,7 @@ class BuildingView(BaseView):
         menu_options['create'] = 'Create a new building'
         menu_options['update'] = 'Update a building'
         menu_options['delete'] = 'Delete a building'
+        menu_options['lockdown'] = 'Lock down a building'
         menu_options['debug'] = 'Debug'
         menu_options['back'] = '<< Back'
         self.menu_prompt = prompts.MenuPrompt(menu_options)
@@ -62,6 +67,8 @@ class BuildingView(BaseView):
 
         # Deletion prompts (happen to be the same as retrieval)
         self.deletion_prompt_list = self.retrieval_prompt_list
+
+        self.lockdown_prompts = self.retrieval_prompt_list
 
     def get_header(self):
         return 'Manage Buildings'
@@ -132,6 +139,18 @@ class BuildingView(BaseView):
             self.output.success(self.get_building_success_message % building, end='\n\n')
         else:
             self.output.fail(self.get_building_error_message, end='\n\n')
+
+    def lockdown(self):
+        """
+        Lock all doors contained in a single building.
+        """
+        lockdown_params = self.retrieval_prompt_list.ask_and_parse_all()
+        success = self.controller.lockdown_building(lockdown_params['location'])
+
+        if success:
+            self.output.success(self.lockdown_building_success_message, end='\n\n')
+        else:
+            self.output.fail(self.lockdown_building_error_message, end='\n\n')
 
     def debug(self):
         """

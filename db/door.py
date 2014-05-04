@@ -30,6 +30,14 @@ class DoorDatabaseMixin(object):
     def delete_door(self, door_id):
         return self.doors.delete(door_id)
 
+    def get_all_doors(self, location):
+        doors = self.doors.get_all()
+        if location:
+            for d in doors:
+                if d.location != location:
+                    doors.remove(d)
+        return doors
+
     def dump_doors(self):
         """
         Useful for debugging.
