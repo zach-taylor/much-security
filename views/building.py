@@ -14,6 +14,7 @@ class BuildingView(BaseView):
         'update',
         'delete',
         'lockdown',
+        'fire_alarm',
         'debug'
     ]
 
@@ -32,6 +33,9 @@ class BuildingView(BaseView):
     lockdown_building_success_message = 'Building locked down.'
     lockdown_building_error_message = 'Could not lock down building.'
 
+    fire_alarm_building_success_message = 'Building fire alarm activated.'
+    fire_alarm_building_error_message = 'Could not activate building fire alarm.'
+
     def __init__(self, router):
         super(BuildingView, self).__init__(router)
 
@@ -45,6 +49,7 @@ class BuildingView(BaseView):
         menu_options['update'] = 'Update a building'
         menu_options['delete'] = 'Delete a building'
         menu_options['lockdown'] = 'Lock down a building'
+        menu_options['fire_alarm'] = 'Activate fire alarm for a building'
         menu_options['debug'] = 'Debug'
         menu_options['back'] = '<< Back'
         self.menu_prompt = prompts.MenuPrompt(menu_options)
@@ -69,6 +74,8 @@ class BuildingView(BaseView):
         self.deletion_prompt_list = self.retrieval_prompt_list
 
         self.lockdown_prompts = self.retrieval_prompt_list
+
+        self.fire_alarm_prompts = self.retrieval_prompt_list
 
     def get_header(self):
         return 'Manage Buildings'
@@ -151,6 +158,18 @@ class BuildingView(BaseView):
             self.output.success(self.lockdown_building_success_message, end='\n\n')
         else:
             self.output.fail(self.lockdown_building_error_message, end='\n\n')
+
+    def fire_alarm(self):
+        """
+        Unlock all doors contained in a single building.
+        """
+        fire_alarm_params = self.retrieval_prompt_list.ask_and_parse_all()
+        success = self.controller.fire_alarm_building(fire_alarm_params['location'])
+
+        if success:
+            self.output.success(self.fire_alarm_building_success_message, end='\n\n')
+        else:
+            self.output.fail(self.fire_alarm_building_error_message, end='\n\n')
 
     def debug(self):
         """

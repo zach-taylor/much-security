@@ -43,5 +43,16 @@ class BuildingController(BaseController):
             self.db.update_door(d)
         return True
 
+    def fire_alarm_building(self, location):
+        building = self.get_building(location)
+        if not building:
+            return False
+
+        doors = self.db.get_all_doors(building.location)
+        for d in doors:
+            d.locked = 'False'
+            self.db.update_door(d)
+        return True
+
     def get_building_debug(self):
         return self.db.dump_buildings()
